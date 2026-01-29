@@ -11,10 +11,10 @@
 # Site Basic Information
 # =============================================================================
 site:
-  title: 余弦の博客 # 网站名称
-  alternate: cosine # 网站英文名称 用于页脚、Logo、@ handle 等
+  title: 彼岸の博客 # 网站名称
+  alternate: yoyo # 网站英文名称 用于页脚、Logo、@ handle 等
   subtitle: WA 的一声就哭了 # 网站副标题
-  name: cos # 作者名称 - 请修改为你的名字
+  name: yoyo # 作者名称 - 请修改为你的名字
   description: 一个基于 Astro 的现代化博客主题 # 网站描述
   avatar: /img/avatar.webp # 网站头像
   showLogo: true # 是否显示 Logo
@@ -39,7 +39,7 @@ categoryMap:
   随笔: life
   笔记: note
   工具: tools
-  周刊: weekly
+  #周刊: weekly
   # Secondary categories (for nested paths)
   前端: front-end
   # Add more as needed:
@@ -94,20 +94,20 @@ featuredCategories:
 #   links: 相关链接配置（可选）
 # -----------------------------------------------------------------------------
 featuredSeries:
-  - slug: weekly # URL 路径: /weekly
-    categoryName: 周刊 # 必须与 categoryMap 中的分类名匹配
-    label: 我的周刊 # 简短名称
-    fullName: 我的技术周刊 # 完整名称
-    description: | # 支持多行 Markdown
-      这是周刊/系列文章功能的示例配置。
-      你可以用它来发布定期更新的系列内容，如技术周刊、读书笔记系列等。
-      设置 enabled: false 可以关闭此功能。
-    cover: /img/weekly_header.webp # 系列页面头图
-    enabled: true # 启用此系列
-    icon: ri:newspaper-line # 导航图标
-    links: # 相关链接（可选）
-      github: https://github.com/your-username/your-repo # (可选) GitHub 仓库
-      rss: /rss.xml # (可选) RSS 订阅链接
+#  - slug: weekly # URL 路径: /weekly
+#    categoryName: 周刊 # 必须与 categoryMap 中的分类名匹配
+#    label: 我的周刊 # 简短名称
+#    fullName: 我的技术周刊 # 完整名称
+#    description: | # 支持多行 Markdown
+#      这是周刊/系列文章功能的示例配置。
+#      你可以用它来发布定期更新的系列内容，如技术周刊、读书笔记系列等。
+#      设置 enabled: false 可以关闭此功能。
+#    cover: /img/weekly_header.webp # 系列页面头图
+#    enabled: true # 启用此系列
+#    icon: ri:newspaper-line # 导航图标
+#    links: # 相关链接（可选）
+#      github: https://github.com/your-username/your-repo # (可选) GitHub 仓库
+#      rss: /rss.xml # (可选) RSS 订阅链接
       # chrome: https://chromewebstore.google.com/detail/your-extension-id # (可选) 浏览器插件
       # docs: https://your-docs-url # (可选) 文档链接
   # 示例：添加第二个系列（取消注释启用）
@@ -321,9 +321,9 @@ navigation:
     icon: ri:home-heart-fill # 图标
   # - name: 书摘
   #   path: /reading
-  - name: 周刊
-    path: /weekly
-    icon: ri:newspaper-line
+#  - name: 周刊
+#    path: /weekly
+#    icon: ri:newspaper-line
   - name: 文章 # 有子菜单时，path 可省略
     icon: ri:quill-pen-ai-fill
     children: # 子菜单列表

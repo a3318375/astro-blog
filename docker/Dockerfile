@@ -17,6 +17,8 @@ RUN corepack enable && corepack prepare pnpm@9.15.1 --activate
 # Copy package files first (for Docker layer caching)
 COPY package.json pnpm-lock.yaml ./
 
+ENV RE2_BINARY_HOST_Mirror=https://npmmirror.com/mirrors/node-re2/
+
 # Install dependencies (include dev deps for build)
 RUN pnpm install --frozen-lockfile --prod=false
 
@@ -46,11 +48,17 @@ FROM nginx:alpine AS production
 # Copy nginx configuration
 COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
+RUN rm -rf /usr/share/nginx/html/*
 # Copy built static files
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+RUN if [ -d "/usr/share/nginx/html/client" ]; then \
+      cp -r /usr/share/nginx/html/client/* /usr/share/nginx/html/ && \
+      rm -rf /usr/share/nginx/html/client; \
+    fi
+
 # Expose port 80
-EXPOSE 80
+EXPOSE 4321
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

@@ -117,6 +117,7 @@ function conditionalSnowfall() {
 // https://astro.build/config
 export default defineConfig({
   site: yamlConfig.site.url,
+  output: 'static',
   adapter,
   compressHTML: true,
   markdown: {
