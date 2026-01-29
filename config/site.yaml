@@ -16,11 +16,11 @@ site:
   subtitle: WA 的一声就哭了 # 网站副标题
   name: yoyo # 作者名称 - 请修改为你的名字
   description: 一个基于 Astro 的现代化博客主题 # 网站描述
-  avatar: /img/avatar.webp # 网站头像
+  avatar: https://media.yuxh.cc/blog/base/avatar.webp # 网站头像
   showLogo: true # 是否显示 Logo
   author: Author # 作者名称 - 请修改为你的名字
   url: https://koharu.cosine.ren # 站点 URL 用于 RSS 和 SEO
-  defaultOgImage: /img/avatar.webp # 默认 Open Graph 图片
+  defaultOgImage: https://media.yuxh.cc/blog/base/avatar.webp # 默认 Open Graph 图片
   startYear: 2024 # 建站年份
   keywords: # SEO 关键词
     - 博客
@@ -61,19 +61,19 @@ categoryMap:
 featuredCategories:
   - link: life # 对应 categoryMap 中 随笔: life
     label: 随笔
-    image: /img/cover/2.webp
+    image: https://media.yuxh.cc/blog/base/2.webp
     description: 生活记录、随想随笔
   - link: note # 对应 categoryMap 中 笔记: note
     label: 笔记
-    image: /img/cover/4.webp
+    image: https://media.yuxh.cc/blog/base/4.webp
     description: 技术笔记、学习笔记
   - link: note/front-end # 嵌套分类：笔记/前端
     label: 前端
-    image: /img/cover/1.webp
+    image: https://media.yuxh.cc/blog/base/1.webp
     description: 前端技术相关
   - link: tools # 对应 categoryMap 中 工具: tools
     label: 工具
-    image: /img/cover/11.webp
+    image: https://media.yuxh.cc/blog/base/11.webp
     description: 工具使用、效率提升
 
 # =============================================================================
@@ -201,7 +201,7 @@ friends:
       url: https://blog.cosine.ren
       owner: cos
       desc: FE / ACG / 手工 / 深色模式强迫症 / INFP / 兴趣广泛养两只猫的老宅女 / remote
-      image: https://blog.cosine.ren/img/avatar.webp
+      image: hhttps://media.yuxh.cc/blog/base/avatar.webp
       color: '#ed788b'
     - site: 示例博客 A
       url: https://example-a.com
