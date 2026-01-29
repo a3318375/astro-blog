@@ -14,6 +14,7 @@
 services:
   astro-koharu:
     image: astro-koharu:latest
+    container_name: astro
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -23,7 +24,7 @@ services:
         - UMAMI_ID=${UMAMI_ID}
         - UMAMI_ENDPOINT=${UMAMI_ENDPOINT}
     ports:
-      - "${BLOG_PORT:-4321}:80"
+      - "${BLOG_PORT:-4321}:4321"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
