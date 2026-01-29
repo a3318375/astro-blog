@@ -58,7 +58,7 @@ RUN if [ -d "/usr/share/nginx/html/client" ]; then \
     fi
 
 # Expose port 80
-EXPOSE 4321
+EXPOSE 80
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
