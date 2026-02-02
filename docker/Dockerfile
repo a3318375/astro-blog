@@ -41,24 +41,17 @@ RUN pnpm build
 # =============================================================================
 # Stage 2: Production (nginx)
 # =============================================================================
-FROM nginx:alpine AS production
-
-# Copy nginx configuration
-COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY docker/start.sh /etc/nginx/start.sh
-RUN chmod +x /etc/nginx/start.sh
+FROM node:22-alpine AS production
 
 # Copy built static files
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist ./dist
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 4321
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
 
 # Start nginx
-#CMD ["nginx", "-g", "daemon off;"]
-#CMD ["node", "/usr/share/nginx/html/server/entry.mjs"]
-CMD ["/etc/nginx/start.sh"]
+CMD ["node", "dist/server/entry.mjs"]
