@@ -45,6 +45,8 @@ FROM nginx:alpine AS production
 
 # Copy nginx configuration
 COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY docker/start.sh /etc/nginx/start.sh
+RUN chmod +x /etc/nginx/start.sh
 
 # Copy built static files
 COPY --from=builder /app/dist /usr/share/nginx/html
@@ -58,4 +60,5 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 
 # Start nginx
 #CMD ["nginx", "-g", "daemon off;"]
-CMD ["node", "/usr/share/nginx/html/server/entry.mjs"]
+#CMD ["node", "/usr/share/nginx/html/server/entry.mjs"]
+CMD ["/etc/nginx/start.sh"]
