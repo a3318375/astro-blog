@@ -1,12 +1,10 @@
 # =============================================================================
-# astro-koharu Dockerfile
-# Multi-stage build for static site generation with nginx
+# astro-koharu Dockerfile (SSR Mode)
+# Multi-stage build for SSR with Node.js server
 # =============================================================================
 
 # =============================================================================
 # Stage 1: Builder
-# Combines dependency installation and build in one stage to preserve pnpm
-# symlink structure (copying node_modules between stages breaks symlinks)
 # =============================================================================
 FROM node:22-alpine AS builder
 WORKDIR /app
@@ -14,55 +12,52 @@ WORKDIR /app
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@9.15.1 --activate
 
-# Copy package files first (for Docker layer caching)
+# Copy deps first
 COPY package.json pnpm-lock.yaml ./
-
-ENV RE2_BINARY_HOST_Mirror=https://npmmirror.com/mirrors/node-re2/
-
-# Install dependencies (include dev deps for build)
 RUN pnpm install --frozen-lockfile --prod=false
 
-# Copy source files
+# Copy source
 COPY . .
 
-# Build-time arguments for sensitive configuration
+# Build-time args (still used if you embed config in JS during build)
 ARG REMARK_URL
 ARG REMARK_SITE_ID
 ARG UMAMI_ID
 ARG UMAMI_ENDPOINT
 
-# Set environment variables for build
 ENV REMARK_URL=${REMARK_URL}
 ENV REMARK_SITE_ID=${REMARK_SITE_ID}
 ENV UMAMI_ID=${UMAMI_ID}
 ENV UMAMI_ENDPOINT=${UMAMI_ENDPOINT}
 
-# Build the static site
+# Build SSR app → outputs dist/client and dist/server
 RUN pnpm build
 
 # =============================================================================
-# Stage 2: Production (nginx)
+# Stage 2: Production (Node.js runtime)
 # =============================================================================
-FROM nginx:alpine AS production
+FROM node:22-alpine AS production
 
-# Copy nginx configuration
-COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-RUN rm -rf /usr/share/nginx/html/*
-# Copy built static files
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Install only production dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && \
+    corepack prepare pnpm@9.15.1 --activate && \
+    pnpm install --frozen-lockfile --prod=true
 
-RUN if [ -d "/usr/share/nginx/html/client" ]; then \
-      cp -r /usr/share/nginx/html/client/* /usr/share/nginx/html/ && \
-      rm -rf /usr/share/nginx/html/client; \
-    fi
+# Copy built output
+COPY --from=builder /app/dist ./dist
 
-# Expose port 80
-EXPOSE 80
+# Optional: copy public assets if not in dist/client
+# COPY --from=builder /app/public ./public
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
+# Expose port (Astro SSR defaults to 4321, but you can set env)
+EXPOSE 4321
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Health check (adjust port if needed)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:4321/ || exit 1
+
+# Start the SSR server
+CMD ["node", "dist/server/entry.mjs"]
